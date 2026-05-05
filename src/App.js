@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Player from "./components/Player";
 import Playlist from "./components/Playlist";
 import { songs } from "./data/songs";
@@ -40,21 +40,22 @@ function App() {
   };
 
   // ▶ PLAY / PAUSE
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio.play();
-      setIsPlaying(true);
-    }
-  };
+    setIsPlaying(prev => {
+      const nextState = !prev;
+
+      if (nextState) audio.play();
+      else audio.pause();
+
+    return nextState;
+    });
+  }, []);
 
   // ⏭ NEXT
-  const next = () => {
+  const next = useCallback(() => {
     if (filteredSongs.length === 0) return;
 
     const nextIndex = shuffle
@@ -62,17 +63,17 @@ function App() {
       : (currentIndex + 1) % filteredSongs.length;
 
     setCurrentId(filteredSongs[nextIndex].src);
-  };
+  }, [filteredSongs, shuffle, currentIndex]);
 
   // ⏮ PREV
-  const prev = () => {
+  const prev = useCallback(() => {
     if (filteredSongs.length === 0) return;
 
     const prevIndex =
       (currentIndex - 1 + filteredSongs.length) % filteredSongs.length;
 
     setCurrentId(filteredSongs[prevIndex].src);
-  };
+  }, [filteredSongs, currentIndex]);
 
   // 🎵 LOAD SONG
   useEffect(() => {
@@ -133,7 +134,6 @@ function App() {
     const handleKeyDown = (e) => {
       const tag = e.target.tagName.toLowerCase();
 
-      // ❌ Ignore typing inside input/textarea
       if (tag === "input" || tag === "textarea") return;
 
       const audio = audioRef.current;
@@ -210,7 +210,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [togglePlay, next, prev]);
+  }, [togglePlay, next, prev, isPlaying]);
 
   // NO SONG CASE
   if (!song) {
