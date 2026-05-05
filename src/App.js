@@ -27,10 +27,6 @@ function App() {
 
   const song = songs.find((s) => s.src === currentId);
 
-  const currentIndex = filteredSongs.findIndex(
-    (s) => s.src === currentId
-  );
-
   // ⏱ FORMAT TIME
   const format = (t) => {
     const m = Math.floor(t / 60);
