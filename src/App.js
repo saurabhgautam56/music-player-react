@@ -7,6 +7,7 @@ import "./styles/style.css";
 function App() {
   const audioRef = useRef(null);
 
+  // 🎵 STATE
   const [currentId, setCurrentId] = useState(songs[0]?.src);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -15,65 +16,69 @@ function App() {
   const [repeat, setRepeat] = useState("off");
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // TIME DURATION
   const [time, setTime] = useState("0:00");
   const [duration, setDuration] = useState("0:00");
   const [search, setSearch] = useState("");
-  
-  // 
+
+  // 🔍 FILTER
   const filteredSongs = songs.filter((s) =>
     (s.title + s.artist).toLowerCase().includes(search.toLowerCase())
   );
 
   const song = songs.find((s) => s.src === currentId);
 
-  // CURRENT INDEX
   const currentIndex = filteredSongs.findIndex(
     (s) => s.src === currentId
   );
 
-  // FORMAT TIME
+  // ⏱ FORMAT TIME
   const format = (t) => {
     const m = Math.floor(t / 60);
     const s = Math.floor(t % 60);
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  // ▶ PLAY / PAUSE
+  // ▶ PLAY / PAUSE (STABLE)
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    setIsPlaying(prev => {
-      const nextState = !prev;
-
-      if (nextState) audio.play();
+    setIsPlaying((prev) => {
+      const next = !prev;
+      if (next) audio.play();
       else audio.pause();
-
-    return nextState;
+      return next;
     });
   }, []);
 
-  // ⏭ NEXT
+  // ⏭ NEXT (STABLE)
   const next = useCallback(() => {
     if (filteredSongs.length === 0) return;
 
-    const nextIndex = shuffle
-      ? Math.floor(Math.random() * filteredSongs.length)
-      : (currentIndex + 1) % filteredSongs.length;
+    setCurrentId((prevId) => {
+      const index = filteredSongs.findIndex((s) => s.src === prevId);
 
-    setCurrentId(filteredSongs[nextIndex].src);
-  }, [filteredSongs, shuffle, currentIndex]);
+      const nextIndex = shuffle
+        ? Math.floor(Math.random() * filteredSongs.length)
+        : (index + 1) % filteredSongs.length;
 
-  // ⏮ PREV
+      return filteredSongs[nextIndex].src;
+    });
+  }, [filteredSongs, shuffle]);
+
+  // ⏮ PREV (STABLE)
   const prev = useCallback(() => {
     if (filteredSongs.length === 0) return;
 
-    const prevIndex =
-      (currentIndex - 1 + filteredSongs.length) % filteredSongs.length;
+    setCurrentId((prevId) => {
+      const index = filteredSongs.findIndex((s) => s.src === prevId);
 
-    setCurrentId(filteredSongs[prevIndex].src);
-  }, [filteredSongs, currentIndex]);
+      const prevIndex =
+        (index - 1 + filteredSongs.length) % filteredSongs.length;
+
+      return filteredSongs[prevIndex].src;
+    });
+  }, [filteredSongs]);
 
   // 🎵 LOAD SONG
   useEffect(() => {
@@ -85,7 +90,7 @@ function App() {
     if (isPlaying) {
       audio.play();
     }
-  }, [song]);
+  }, [song, isPlaying]);
 
   // ⏱ TIME UPDATE
   useEffect(() => {
@@ -107,7 +112,7 @@ function App() {
     return () => audio.removeEventListener("timeupdate", update);
   }, []);
 
-  // SONG END
+  // 🔁 SONG END
   const handleEnded = () => {
     if (repeat === "one") {
       audioRef.current.currentTime = 0;
@@ -117,7 +122,7 @@ function App() {
     }
   };
 
-  // ROTATE COVER
+  // 🔄 ROTATE COVER (FIXED DEPENDENCY)
   useEffect(() => {
     const player = document.querySelector(".music-player");
     if (!player) return;
@@ -129,35 +134,29 @@ function App() {
     }
   }, [isPlaying]);
 
-  // KEYWORD
+  // ⌨️ KEYBOARD CONTROLS (FULL FIX)
   useEffect(() => {
     const handleKeyDown = (e) => {
       const tag = e.target.tagName.toLowerCase();
-
       if (tag === "input" || tag === "textarea") return;
 
       const audio = audioRef.current;
       if (!audio) return;
 
       switch (e.code) {
-
-        // ▶ PLAY / PAUSE
         case "Space":
           e.preventDefault();
           togglePlay();
           break;
 
-        // ⏭ NEXT
         case "ArrowRight":
           next();
           break;
 
-        // ⏮ PREV
         case "ArrowLeft":
           prev();
           break;
 
-        // 🔊 VOLUME UP
         case "ArrowUp":
           e.preventDefault();
           setVolume((prev) => {
@@ -167,7 +166,6 @@ function App() {
           });
           break;
 
-        // 🔉 VOLUME DOWN
         case "ArrowDown":
           e.preventDefault();
           setVolume((prev) => {
@@ -177,7 +175,6 @@ function App() {
           });
           break;
 
-        // 🔇 MUTE / UNMUTE
         case "KeyM":
           setVolume((prev) => {
             const v = prev > 0 ? 0 : 1;
@@ -186,12 +183,10 @@ function App() {
           });
           break;
 
-        // 🔀 SHUFFLE
         case "KeyS":
           setShuffle((prev) => !prev);
           break;
 
-        // 🔁 REPEAT MODE
         case "KeyR":
           setRepeat((prev) => {
             if (prev === "off") return "one";
@@ -212,7 +207,7 @@ function App() {
     };
   }, [togglePlay, next, prev, isPlaying]);
 
-  // NO SONG CASE
+  // 🛑 NO SONG
   if (!song) {
     return <h2 style={{ padding: 20 }}>No songs found 🎵</h2>;
   }
@@ -226,7 +221,7 @@ function App() {
         onEnded={handleEnded}
       />
 
-      {/* LAYOUT */}
+      {/* UI */}
       <div className="app-container">
 
         <Player
@@ -249,15 +244,12 @@ function App() {
           setVolume={(v) => {
             const value = Number(v);
             setVolume(value);
-            if (audioRef.current) {
-              audioRef.current.volume = value;
-            }
+            if (audioRef.current) audioRef.current.volume = value;
           }}
           shuffle={shuffle}
           setShuffle={setShuffle}
           repeat={repeat}
           setRepeat={setRepeat}
-
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
         />
