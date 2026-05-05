@@ -1,70 +1,188 @@
-# Getting Started with Create React App
+# 🎵 Music Player React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive **Music Player Web App** built using **React.js** with a clean UI, smooth controls, and playlist management.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Live Demo
 
-### `npm start`
+👉 https://saurabh-music-player.netlify.app/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📸 Preview
 
-### `npm test`
+<img width="1366" height="768" alt="Screenshot (34)" src="https://github.com/user-attachments/assets/19408134-7f97-4e41-8512-88c938a5d6fa" />
+<img width="711" height="644" alt="Screenshot 2026-05-05 212528" src="https://github.com/user-attachments/assets/2594e864-ece5-47b1-a247-a738b767de95" />
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ✨ Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🎧 Player Controls
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* ▶️ Play / Pause
+* ⏭ Next / Previous
+* 🔀 Shuffle mode
+* 🔁 Repeat (Off / One / All)
+* 🎚 Volume control
+* ⏱ Progress bar with seek
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### 📃 Playlist
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Scrollable playlist
+* Active song highlight
+* Auto-scroll to current song (desktop)
+* Smart scroll (mobile friendly)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔍 Search
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* Real-time search filter
+* Highlight matching text
+* Works for both title & artist
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### ⌨️ Keyboard Shortcuts
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Key   | Action         |
+| ----- | -------------- |
+| Space | Play / Pause   |
+| →     | Next song      |
+| ←     | Previous song  |
+| ↑     | Volume Up      |
+| ↓     | Volume Down    |
+| M     | Mute / Unmute  |
+| S     | Shuffle toggle |
+| R     | Repeat mode    |
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📱 Responsive Design
 
-### Analyzing the Bundle Size
+* Works on desktop & mobile
+* Mobile tap-to-expand player
+* Smooth UI transitions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🛠️ Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* ⚛️ React.js
+* 🎨 CSS (Glass UI + Gradients)
+* 🎵 HTML5 Audio API
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📂 Project Structure
 
-### Deployment
+```
+music-player-react/
+│
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Player.js
+│   │   └── Playlist.js
+│   ├── data/
+│   │   └── songs.js
+│   ├── styles/
+│   │   └── style.css
+│   └── App.js
+│
+├── package.json
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## ⚙️ Installation & Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/saurabhgautam56/music-player-react.git
+cd music-player-react
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Run the app
+
+```bash
+npm start
+```
+
+App will run on:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🏗 Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+## 🌐 Deployment (Netlify)
+
+1. Push project to GitHub
+2. Go to Netlify
+3. Import repository
+4. Build command:
+
+```
+npm run build
+```
+
+5. Publish directory:
+
+```
+build
+```
+
+---
+
+## 📌 Future Improvements
+
+* 🎧 Mini player (mobile)
+* 🎵 Music visualizer
+* ❤️ Favorites system
+* 📂 Custom playlists
+* 🌙 Dark / Light mode toggle
+
+---
+
+## 👨‍💻 Author
+
+**Saurabh Gautam**
+
+* GitHub: https://github.com/saurabhgautam56
+
+---
+
+## ⭐ Support
+
+If you like this project:
+
+👉 Star the repo
+👉 Share with others
+
+---
+
+## 📄 License
+
+This project is open source and available under the MIT License.
