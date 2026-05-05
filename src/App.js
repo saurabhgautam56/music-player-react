@@ -85,6 +85,7 @@ function App() {
     if (isPlaying) {
       audio.play();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [song]);
 
   // ⏱ TIME UPDATE
